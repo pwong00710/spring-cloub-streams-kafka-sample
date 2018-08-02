@@ -1,0 +1,44 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://${EUREKA_HOSTNAME:localhost}:8061/eureka/
+      
+spring:
+  application:
+    name: consumer-service
+  cloud:
+    config:
+      discovery:
+        serviceId: config-service
+        enabled: true
+#    stream:
+#      instanceIndex: ${CONSUMER_INSTANCE_INDEX:0}
+      
+#spring:
+#  application:
+#    name: consumer-service
+#  cloud:
+#    stream:
+#      kafka:
+#        binder:
+#          brokers: ${KAFKA_HOSTNAME:localhost}:9092
+#          autoAddPartitions: true
+#        bindings: 
+#          greetings-in:
+#            consumer:
+#             autoRebalanceEnabled: false          
+#      bindings:
+#        greetings-in:
+#          destination: greetings
+#          consumer:
+#            partitioned: true
+#          group: greetingConsumers
+#        goodbyes-out:
+#          destination: goodbyes
+#          producer:
+#            partitionKeyExpression: payload.partitionId
+#            partitionCount: ${CONSUMER_INSTANCE_COUNT:2}          
+#      instanceCount: ${CONSUMER_INSTANCE_COUNT:2}
+#      instanceIndex: ${CONSUMER_INSTANCE_INDEX:0}
+
+

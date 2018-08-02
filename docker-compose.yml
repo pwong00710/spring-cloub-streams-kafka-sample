@@ -1,0 +1,90 @@
+version: '2.4'
+services:
+  discovery-service:
+    image: discovery-service
+    ports:
+      - "8061:8061"
+    networks:
+      - network1
+    environment:
+      EUREKA_HOSTNAME: discovery-service
+      STARTUP_DELAY: 15
+  config-service:
+    image: config-service
+    ports:
+      - "8088:8088"
+    networks:
+      - network1
+    environment:
+      EUREKA_HOSTNAME: discovery-service
+#      KAFKA_HOSTNAME: kafka
+#      CONSUMER_INSTANCE_COUNT: ${CONSUMER_INSTANCE_COUNT}
+      STARTUP_DELAY: 30
+    depends_on:
+      - "discovery-service"                        
+  zookeeper:
+    image: wurstmeister/zookeeper
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+    networks:
+      - network1
+  kafka:
+    image: wurstmeister/kafka
+    container_name: kafka
+    ports:
+      - "9092:9092"
+    networks:
+      - network1      
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: ${HOSTNAME_COMMAND}
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - "zookeeper"      
+  producer-service-1:
+    image: producer-service
+    ports:
+      - "8080:8080"
+    networks:
+      - network1
+    environment:
+      EUREKA_HOSTNAME: discovery-service    
+      KAFKA_HOSTNAME: kafka
+      CONSUMER_INSTANCE_COUNT: ${CONSUMER_INSTANCE_COUNT}
+      CONSUMER_INSTANCE_INDEX: 0
+      STARTUP_DELAY: 60
+    depends_on:
+      - "discovery-service"
+      - "kafka" 
+      - "consumer-service"     
+#  producer-service-2:
+#    image: producer-service
+#    ports:
+#      - "8081:8080"
+#    networks:
+#      - network1
+#    environment:
+#      EUREKA_HOSTNAME: discovery-service    
+#      KAFKA_HOSTNAME: kafka 
+#      CONSUMER_INSTANCE_INDEX: 1
+#      STARTUP_DELAY: 60
+#    depends_on:
+#      - "discovery-service"
+#      - "kafka" 
+#      - "consumer-service"            
+  consumer-service:
+    image: consumer-service
+    networks:
+      - network1
+    environment:
+      EUREKA_HOSTNAME: discovery-service    
+      KAFKA_HOSTNAME: kafka
+      CONSUMER_INSTANCE_COUNT: ${CONSUMER_INSTANCE_COUNT}
+      STARTUP_DELAY: 45
+    depends_on:
+      - "discovery-service"
+      - "kafka"
+networks:
+  network1:

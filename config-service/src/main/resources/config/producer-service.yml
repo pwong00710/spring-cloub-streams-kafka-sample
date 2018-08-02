@@ -1,0 +1,39 @@
+#eureka:
+#  client:
+#    serviceUrl:
+#      defaultZone: http://${EUREKA_HOSTNAME:localhost}:8061/eureka/
+      
+spring:
+  application:
+    name: producer-service
+  cloud:
+    stream:
+#      default:
+#        contentType: application/json    
+      kafka:
+        binder:
+          brokers: ${KAFKA_HOSTNAME:localhost}:9092
+          autoAddPartitions: true       
+        bindings: 
+          goodbyes-in:
+            consumer:
+             autoRebalanceEnabled: false
+      bindings:
+        goodbyes-in:
+          destination: goodbyes
+#          contentType: application/json          
+          consumer:
+            partitioned: true
+          group: goodbyeConsumers          
+        greetings-out:
+          destination: greetings
+#          contentType: application/json          
+          producer:
+            partitionKeyExpression: payload.partitionId
+            partitionCount: ${CONSUMER_INSTANCE_COUNT:2}       
+      instanceCount: ${CONSUMER_INSTANCE_COUNT:2}
+#      instanceIndex: ${CONSUMER_INSTANCE_INDEX:0}
+
+server:
+  port: ${PRODUCER_PORT:8080}      
+ 

@@ -1,0 +1,1 @@
+export EUREKA_HOSTNAME=localhost

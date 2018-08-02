@@ -1,0 +1,3 @@
+export KAFKA_HOSTNAME=localhost
+export EUREKA_HOSTNAME=localhost
+export CONSUMER_INSTANCE_COUNT=2
