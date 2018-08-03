@@ -9,12 +9,10 @@ import com.kaviddiss.streamkafka.service.GoodbyesListener;
 import com.kaviddiss.streamkafka.service.GreetingsService;
 import com.kaviddiss.streamkafka.stream.HelloStreams;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
@@ -24,6 +22,7 @@ import org.springframework.http.MediaType;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -35,6 +34,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {StreamKafkaApplication.class})
+//@ActiveProfiles("test")
 @AutoConfigureMockMvc
 @Slf4j
 public class StreamKafkaTest {
@@ -57,6 +57,14 @@ public class StreamKafkaTest {
 
     @SpyBean
     DummyService dummyService;
+    
+    @Value("${application.banner}")
+    String banner;
+    
+    @Before
+    public void setup() {
+        log.info(banner);
+    }
     
     @Test
     public void testSendGreeting() throws Exception {

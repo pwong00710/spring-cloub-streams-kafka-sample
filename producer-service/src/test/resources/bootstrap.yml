@@ -1,0 +1,41 @@
+spring:
+  profiles:
+    active: test
+  application:
+    name: producer-service
+  cloud:
+    discovery:
+      enabled: false
+    config:
+      enabled: false
+    service-registry:
+      auto-registration:
+        enabled: false      
+
+#  cloud:
+#    stream:
+#      kafka:
+#        binder:
+#          brokers: ${KAFKA_HOSTNAME:localhost}:9092
+#          autoAddPartitions: true       
+#        bindings: 
+#          goodbyes-in:
+#            consumer:
+#             autoRebalanceEnabled: false
+#      bindings:
+#        goodbyes-in:
+#          destination: goodbyes
+#          consumer:
+#            partitioned: true
+#          group: goodbyeConsumers          
+#        greetings-out:
+#          destination: greetings
+#          producer:
+#            partitionKeyExpression: payload.partitionId
+#            partitionCount: ${CONSUMER_INSTANCE_COUNT:2}       
+#      instanceCount: ${CONSUMER_INSTANCE_COUNT:2}
+#      instanceIndex: ${CONSUMER_INSTANCE_INDEX:0}
+#
+#server:
+#  port: ${PRODUCER_PORT:8080}      
+ 
