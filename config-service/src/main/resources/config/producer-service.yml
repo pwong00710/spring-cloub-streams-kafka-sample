@@ -35,5 +35,8 @@ spring:
 #      instanceIndex: ${CONSUMER_INSTANCE_INDEX:0}
 
 server:
-  port: ${PRODUCER_PORT:8080}      
- 
+  port: ${PRODUCER_PORT:8080}
+
+management:
+  health:
+    binders: enabled
