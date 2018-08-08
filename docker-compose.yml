@@ -82,7 +82,7 @@ services:
       EUREKA_HOSTNAME: discovery-service    
       KAFKA_HOSTNAME: kafka
       CONSUMER_INSTANCE_COUNT: ${CONSUMER_INSTANCE_COUNT}
-      STARTUP_DELAY: 45
+      STARTUP_DELAY: 60
     depends_on:
       - "discovery-service"
       - "kafka"

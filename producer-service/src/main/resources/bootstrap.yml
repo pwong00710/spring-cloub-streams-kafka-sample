@@ -12,7 +12,12 @@ spring:
         serviceId: config-service
         enabled: true
     stream:
-      instanceIndex: ${CONSUMER_INSTANCE_INDEX:0}        
+      instanceIndex: ${CONSUMER_INSTANCE_INDEX:0}
+
+#management:
+#  health:
+#    binders:
+#      enabled: true
       
 #spring:
 #  application:
